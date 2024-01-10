@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "dist",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+
+    "target": "ESNext",
+    "strict": true
+  },
+  "include": ["src"]
+}
