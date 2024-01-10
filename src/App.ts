@@ -19,6 +19,10 @@ export default class App extends Component {
         heading: "카운터2",
       },
     });
+
+    this.children.form = Form.create({
+      parent: this.element,
+    });
   }
 
   template() {
