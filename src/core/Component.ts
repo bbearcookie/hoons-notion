@@ -1,7 +1,7 @@
 export default class Component<TProps extends {} = {}, TState = any> {
   readonly element: HTMLElement;
   readonly children: { [name: string]: Component | HTMLElement } = {};
-  readonly props: TProps;
+  props: TProps;
   state: TState;
 
   constructor({ element, props }: { element: HTMLElement; props?: TProps }) {

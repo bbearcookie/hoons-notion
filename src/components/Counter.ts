@@ -1,8 +1,15 @@
 import Component from "@/core/Component";
 
-export default class Counter extends Component<{}, number> {
+export default class Counter extends Component<
+  { initialCount: number; heading?: string },
+  number
+> {
   initialize() {
-    this.state = 0;
+    this.state = this.props.initialCount;
+    this.props = {
+      heading: "기본 카운터",
+      ...this.props,
+    };
   }
 
   handleIncrement() {
@@ -32,6 +39,8 @@ export default class Counter extends Component<{}, number> {
   }
 
   render() {
-    this.element.querySelector("#count")!.textContent = `Count: ${this.state}`;
+    this.element.querySelector(
+      "#count"
+    )!.textContent = `${this.props.heading}: ${this.state}`;
   }
 }
