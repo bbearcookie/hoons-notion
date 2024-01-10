@@ -1,9 +1,23 @@
 import Component from "@/core/Component";
 
-export default class Counter extends Component<
-  { initialCount: number; heading?: string },
-  number
-> {
+interface CounterProps {
+  initialCount: number;
+  heading?: string;
+}
+
+export default class Counter extends Component<CounterProps, number> {
+  static create({
+    parent,
+    props,
+  }: {
+    parent: HTMLElement;
+    props: CounterProps;
+  }) {
+    const element = document.createElement("div");
+    parent.appendChild(element);
+    return new Counter({ element, props });
+  }
+
   initialize() {
     this.state = this.props.initialCount;
     this.props = {
@@ -17,7 +31,6 @@ export default class Counter extends Component<
   }
 
   handleDecrement() {
-    console.log(this);
     this.setState(this.state - 1);
   }
 
