@@ -1,6 +1,6 @@
 export default class Component<TProps extends {} = {}, TState = any> {
   readonly element: HTMLElement;
-  readonly children: { [name: string]: Component } = {};
+  readonly children: { [name: string]: Component | HTMLElement } = {};
   readonly props: TProps;
   state: TState;
 
@@ -9,19 +9,32 @@ export default class Component<TProps extends {} = {}, TState = any> {
     this.state = {} as TState;
     this.props = props || ({} as TProps);
 
-    this.componentDidInitialized();
+    this.renderTemplate();
+    this.initialize();
     this.render();
     this.componentDidMount();
   }
-
-  componentDidInitialized() {}
-  componentDidMount() {}
-  componentDidUpdate() {}
 
   setState(nextState: TState) {
     this.state = nextState;
     this.render();
     this.componentDidUpdate();
+  }
+
+  initialize() {}
+  componentDidMount() {}
+  componentDidUpdate() {}
+
+  template() {
+    return "";
+  }
+
+  private renderTemplate() {
+    const template = this.template();
+
+    if (template) {
+      this.element.innerHTML = this.template();
+    }
   }
 
   render() {}

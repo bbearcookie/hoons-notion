@@ -1,7 +1,7 @@
 import Component from "@/core/Component";
 
 export default class Counter extends Component<{}, number> {
-  componentDidInitialized() {
+  initialize() {
     this.state = 0;
   }
 
@@ -10,6 +10,7 @@ export default class Counter extends Component<{}, number> {
   }
 
   handleDecrement() {
+    console.log(this);
     this.setState(this.state - 1);
   }
 
@@ -22,20 +23,15 @@ export default class Counter extends Component<{}, number> {
       ?.addEventListener("click", () => this.handleDecrement());
   }
 
-  componentDidUpdate() {
-    this.element
-      .querySelector("#increment")
-      ?.addEventListener("click", () => this.handleIncrement());
-    this.element
-      .querySelector("#decrement")
-      ?.addEventListener("click", () => this.handleDecrement());
-  }
-
-  render() {
-    this.element.innerHTML = `
-      <p>Count: ${this.state}</p>
+  template() {
+    return `
+      <p id="count"></p>
       <button id="increment">Increment</button>
       <button id="decrement">Decrement</button>
     `;
+  }
+
+  render() {
+    this.element.querySelector("#count")!.textContent = `Count: ${this.state}`;
   }
 }
