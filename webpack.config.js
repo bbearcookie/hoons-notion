@@ -16,7 +16,7 @@ export default {
     clean: true,
   },
   resolve: {
-    extensions: [".ts", ".js"],
+    extensions: [".ts", ".js", ".html"],
     alias: {
       "@": path.resolve(__dirname, "src"),
     },
@@ -36,6 +36,10 @@ export default {
       {
         test: /\.css$/i,
         use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.html$/i,
+        loader: "html-loader",
       },
     ],
   },

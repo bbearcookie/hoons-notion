@@ -1,6 +1,7 @@
 import Component from "@/core/Component";
 import Counter from "@/components/Counter";
-import Form from "./components/Form";
+import DocumentPage from "@/pages/DocumentPage";
+import Form from "@/components/Form";
 
 export default class App extends Component {
   initialize() {
@@ -21,6 +22,10 @@ export default class App extends Component {
     });
 
     this.children.form = Form.create({
+      parent: this.element,
+    });
+
+    this.children.documentPage = DocumentPage.create({
       parent: this.element,
     });
   }

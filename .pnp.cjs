@@ -27,6 +27,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["css-loader", "virtual:eef9fa645c0be74d6461ee0e05c3fdf653194a4fbb7bfb673a8fce56516605c948e727fa6261b6583a7bf7063bcc3daed771e9c4ca018efd2e0f00ffe95c1f6e#npm:6.9.0"],\
+          ["html-loader", "virtual:eef9fa645c0be74d6461ee0e05c3fdf653194a4fbb7bfb673a8fce56516605c948e727fa6261b6583a7bf7063bcc3daed771e9c4ca018efd2e0f00ffe95c1f6e#npm:4.2.0"],\
           ["html-webpack-plugin", "virtual:eef9fa645c0be74d6461ee0e05c3fdf653194a4fbb7bfb673a8fce56516605c948e727fa6261b6583a7bf7063bcc3daed771e9c4ca018efd2e0f00ffe95c1f6e#npm:5.6.0"],\
           ["style-loader", "virtual:eef9fa645c0be74d6461ee0e05c3fdf653194a4fbb7bfb673a8fce56516605c948e727fa6261b6583a7bf7063bcc3daed771e9c4ca018efd2e0f00ffe95c1f6e#npm:3.3.4"],\
           ["ts-loader", "virtual:eef9fa645c0be74d6461ee0e05c3fdf653194a4fbb7bfb673a8fce56516605c948e727fa6261b6583a7bf7063bcc3daed771e9c4ca018efd2e0f00ffe95c1f6e#npm:9.5.1"],\
@@ -1663,6 +1664,13 @@ const RAW_RUNTIME_STATE =
           ["entities", "npm:2.2.0"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:4.5.0", {\
+        "packageLocation": "../../.yarn/berry/cache/entities-npm-4.5.0-7cdb83b832-10c0.zip/node_modules/entities/",\
+        "packageDependencies": [\
+          ["entities", "npm:4.5.0"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["env-paths", [\
@@ -2197,6 +2205,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["hoons-notion", "workspace:."],\
           ["css-loader", "virtual:eef9fa645c0be74d6461ee0e05c3fdf653194a4fbb7bfb673a8fce56516605c948e727fa6261b6583a7bf7063bcc3daed771e9c4ca018efd2e0f00ffe95c1f6e#npm:6.9.0"],\
+          ["html-loader", "virtual:eef9fa645c0be74d6461ee0e05c3fdf653194a4fbb7bfb673a8fce56516605c948e727fa6261b6583a7bf7063bcc3daed771e9c4ca018efd2e0f00ffe95c1f6e#npm:4.2.0"],\
           ["html-webpack-plugin", "virtual:eef9fa645c0be74d6461ee0e05c3fdf653194a4fbb7bfb673a8fce56516605c948e727fa6261b6583a7bf7063bcc3daed771e9c4ca018efd2e0f00ffe95c1f6e#npm:5.6.0"],\
           ["style-loader", "virtual:eef9fa645c0be74d6461ee0e05c3fdf653194a4fbb7bfb673a8fce56516605c948e727fa6261b6583a7bf7063bcc3daed771e9c4ca018efd2e0f00ffe95c1f6e#npm:3.3.4"],\
           ["ts-loader", "virtual:eef9fa645c0be74d6461ee0e05c3fdf653194a4fbb7bfb673a8fce56516605c948e727fa6261b6583a7bf7063bcc3daed771e9c4ca018efd2e0f00ffe95c1f6e#npm:9.5.1"],\
@@ -2230,6 +2239,30 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["html-loader", [\
+      ["npm:4.2.0", {\
+        "packageLocation": "../../.yarn/berry/cache/html-loader-npm-4.2.0-e021d14a7e-10c0.zip/node_modules/html-loader/",\
+        "packageDependencies": [\
+          ["html-loader", "npm:4.2.0"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:eef9fa645c0be74d6461ee0e05c3fdf653194a4fbb7bfb673a8fce56516605c948e727fa6261b6583a7bf7063bcc3daed771e9c4ca018efd2e0f00ffe95c1f6e#npm:4.2.0", {\
+        "packageLocation": "./.yarn/__virtual__/html-loader-virtual-7e71c04766/3/.yarn/berry/cache/html-loader-npm-4.2.0-e021d14a7e-10c0.zip/node_modules/html-loader/",\
+        "packageDependencies": [\
+          ["html-loader", "virtual:eef9fa645c0be74d6461ee0e05c3fdf653194a4fbb7bfb673a8fce56516605c948e727fa6261b6583a7bf7063bcc3daed771e9c4ca018efd2e0f00ffe95c1f6e#npm:4.2.0"],\
+          ["@types/webpack", null],\
+          ["html-minifier-terser", "npm:7.2.0"],\
+          ["parse5", "npm:7.1.2"],\
+          ["webpack", "virtual:eef9fa645c0be74d6461ee0e05c3fdf653194a4fbb7bfb673a8fce56516605c948e727fa6261b6583a7bf7063bcc3daed771e9c4ca018efd2e0f00ffe95c1f6e#npm:5.89.0"]\
+        ],\
+        "packagePeers": [\
+          "@types/webpack",\
+          "webpack"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["html-minifier-terser", [\
       ["npm:6.1.0", {\
         "packageLocation": "../../.yarn/berry/cache/html-minifier-terser-npm-6.1.0-49a405eebd-10c0.zip/node_modules/html-minifier-terser/",\
@@ -2239,6 +2272,20 @@ const RAW_RUNTIME_STATE =
           ["clean-css", "npm:5.3.3"],\
           ["commander", "npm:8.3.0"],\
           ["he", "npm:1.2.0"],\
+          ["param-case", "npm:3.0.4"],\
+          ["relateurl", "npm:0.2.7"],\
+          ["terser", "npm:5.26.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:7.2.0", {\
+        "packageLocation": "../../.yarn/berry/cache/html-minifier-terser-npm-7.2.0-b9eba92a3b-10c0.zip/node_modules/html-minifier-terser/",\
+        "packageDependencies": [\
+          ["html-minifier-terser", "npm:7.2.0"],\
+          ["camel-case", "npm:4.1.2"],\
+          ["clean-css", "npm:5.3.3"],\
+          ["commander", "npm:10.0.1"],\
+          ["entities", "npm:4.5.0"],\
           ["param-case", "npm:3.0.4"],\
           ["relateurl", "npm:0.2.7"],\
           ["terser", "npm:5.26.0"]\
@@ -3322,6 +3369,16 @@ const RAW_RUNTIME_STATE =
           ["param-case", "npm:3.0.4"],\
           ["dot-case", "npm:3.0.4"],\
           ["tslib", "npm:2.6.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["parse5", [\
+      ["npm:7.1.2", {\
+        "packageLocation": "../../.yarn/berry/cache/parse5-npm-7.1.2-aa9a92c270-10c0.zip/node_modules/parse5/",\
+        "packageDependencies": [\
+          ["parse5", "npm:7.1.2"],\
+          ["entities", "npm:4.5.0"]\
         ],\
         "linkType": "HARD"\
       }]\
