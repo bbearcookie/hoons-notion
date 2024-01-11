@@ -9,14 +9,23 @@
  */
 export default class Component<TProps extends {} = {}, TState = any> {
   readonly element: HTMLElement;
-  readonly children: { [name: string]: Component | HTMLElement } = {};
   props: TProps;
   state: TState;
+  children: Component[] = [];
 
-  constructor({ element, props }: { element: HTMLElement; props?: TProps }) {
+  constructor({
+    element,
+    props,
+    children,
+  }: {
+    element: HTMLElement;
+    props?: TProps;
+    children?: Component[];
+  }) {
     this.element = element;
-    this.state = {} as TState;
     this.props = props || ({} as TProps);
+    this.state = {} as TState;
+    this.children = children || [];
 
     this.renderTemplate();
     this.initialize();
@@ -39,6 +48,10 @@ export default class Component<TProps extends {} = {}, TState = any> {
 
     if (template) {
       this.element.innerHTML = this.template();
+    }
+
+    for (const child of this.children) {
+      this.element.appendChild(child.element);
     }
   }
 

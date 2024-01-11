@@ -5,7 +5,7 @@ import Form from "@/components/Form";
 
 export default class App extends Component {
   initialize() {
-    this.children.counter = Counter.create({
+    Counter.create({
       parent: this.element,
       props: {
         initialCount: 10,
@@ -13,7 +13,7 @@ export default class App extends Component {
       },
     });
 
-    this.children.counter2 = Counter.create({
+    Counter.create({
       parent: this.element,
       props: {
         initialCount: 5,
@@ -21,11 +21,25 @@ export default class App extends Component {
       },
     });
 
-    this.children.form = Form.create({
+    Form.create({
       parent: this.element,
+      children: [
+        Counter.create({
+          props: {
+            initialCount: 5,
+            heading: "칠드런 카운터",
+          },
+        }),
+        Counter.create({
+          props: {
+            initialCount: 5,
+            heading: "칠드런 카운터2",
+          },
+        }),
+      ],
     });
 
-    this.children.documentPage = DocumentPage.create({
+    DocumentPage.create({
       parent: this.element,
     });
   }

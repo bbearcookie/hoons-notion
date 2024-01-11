@@ -10,11 +10,13 @@ export default class Counter extends Component<CounterProps, number> {
     parent,
     props,
   }: {
-    parent: HTMLElement;
+    parent?: HTMLElement;
     props: CounterProps;
   }) {
     const element = document.createElement("div");
-    parent.appendChild(element);
+    if (parent) {
+      parent.appendChild(element);
+    }
     return new Counter({ element, props });
   }
 
