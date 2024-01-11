@@ -1,6 +1,6 @@
 import Component from "@/core/Component";
 
-export interface CounterProps {
+interface CounterProps {
   initialCount: number;
   heading?: string;
 }

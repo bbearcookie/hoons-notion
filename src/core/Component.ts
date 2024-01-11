@@ -38,13 +38,13 @@ export default class Component<TProps extends {} = {}, TState = any> {
 
   static tagName = "div";
 
-  protected static createElement<TProps extends {}>({
+  protected static createElement<T extends Component>({
     parent,
     props,
     children,
   }: {
     parent?: HTMLElement;
-    props?: TProps;
+    props?: T["props"];
     children?: Component[];
   }) {
     const element = document.createElement(this.tagName);
