@@ -1,3 +1,5 @@
+type Children = (Component | string)[];
+
 /**
  * Component 클래스는 컴포넌트의 기본 기능을 정의합니다.
  *
@@ -13,7 +15,7 @@ export default class Component<TProps extends {} = {}, TState = any> {
   readonly element: HTMLElement;
   props: TProps;
   state: TState;
-  children: Component[] = [];
+  children: Children = [];
 
   constructor({
     element,
@@ -22,7 +24,7 @@ export default class Component<TProps extends {} = {}, TState = any> {
   }: {
     element: HTMLElement;
     props?: TProps;
-    children?: Component[];
+    children?: Children;
   }) {
     this.element = element;
     this.props = props || ({} as TProps);
@@ -43,8 +45,8 @@ export default class Component<TProps extends {} = {}, TState = any> {
     children,
   }: {
     parent?: HTMLElement;
-    props?: T["props"];
-    children?: Component[];
+    props: T["props"];
+    children?: Children;
   }) {
     const element = document.createElement(this.tagName);
 
@@ -61,10 +63,16 @@ export default class Component<TProps extends {} = {}, TState = any> {
   }
 
   private mount() {
+    const { element, children } = this;
+
     this.element.innerHTML = this.template();
 
-    for (const child of this.children) {
-      this.element.appendChild(child.element);
+    for (const child of children) {
+      if (typeof child === "string") {
+        element.appendChild(document.createTextNode(child));
+      } else {
+        element.appendChild(child.element);
+      }
     }
   }
 

@@ -2,6 +2,7 @@ import Component from "@/core/Component";
 import Counter from "@/components/Counter";
 import DocumentPage from "@/pages/DocumentPage";
 import Form from "@/components/Form";
+import Link from "@/components/Link";
 
 export default class App extends Component {
   initialize() {
@@ -23,6 +24,7 @@ export default class App extends Component {
 
     Form.createElement<Form>({
       parent: this.element,
+      props: {},
       children: [
         Counter.createElement<Counter>({
           parent: this.element,
@@ -42,8 +44,9 @@ export default class App extends Component {
       ],
     });
 
-    DocumentPage.create({
+    DocumentPage.createElement<DocumentPage>({
       parent: this.element,
+      props: {},
     });
   }
 
