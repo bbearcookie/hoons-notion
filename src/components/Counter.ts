@@ -41,8 +41,8 @@ export default class Counter extends Component<CounterProps, number> {
   template() {
     return `
       <p id="count"></p>
-      <button id="increment">Increment</button>
-      <button id="decrement">Decrement</button>
+      <button type="button" id="increment">Increment</button>
+      <button type="button" id="decrement">Decrement</button>
     `;
   }
 
