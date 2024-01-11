@@ -27,7 +27,7 @@ export default class App extends Component {
 
   template() {
     return `
-      <h1>Hello, World!</h1>
+      <h1 class="line-through italic">Hello, World!</h1>
     `;
   }
 }
