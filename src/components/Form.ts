@@ -6,17 +6,7 @@ interface FormState {
 }
 
 export default class Form extends Component<{}, FormState> {
-  static create({
-    parent,
-    children,
-  }: {
-    parent: HTMLElement;
-    children?: Component[];
-  }) {
-    const element = document.createElement("form");
-    parent.appendChild(element);
-    return new Form({ element, children });
-  }
+  static tagName = "form";
 
   initialize() {
     this.state = {

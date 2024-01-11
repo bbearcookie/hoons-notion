@@ -1,40 +1,43 @@
 import Component from "@/core/Component";
-import Counter from "@/components/Counter";
+import Counter, { CounterProps } from "@/components/Counter";
 import DocumentPage from "@/pages/DocumentPage";
 import Form from "@/components/Form";
 
 export default class App extends Component {
   initialize() {
-    Counter.create({
+    Counter.createElement({
+      parent: this.element,
+      props: {
+        initialCount: 5,
+        heading: "제너레이트 카운터",
+      } satisfies CounterProps,
+    });
+
+    Counter.createElement({
       parent: this.element,
       props: {
         initialCount: 10,
         heading: "카운터",
-      },
+      } satisfies CounterProps,
     });
 
-    Counter.create({
-      parent: this.element,
-      props: {
-        initialCount: 5,
-        heading: "카운터2",
-      },
-    });
-
-    Form.create({
+    Form.createElement({
       parent: this.element,
       children: [
-        Counter.create({
+        Counter.createElement({
+          parent: this.element,
           props: {
             initialCount: 5,
             heading: "칠드런 카운터",
-          },
+          } satisfies CounterProps,
         }),
-        Counter.create({
+
+        Counter.createElement({
+          parent: this.element,
           props: {
-            initialCount: 5,
+            initialCount: 8,
             heading: "칠드런 카운터2",
-          },
+          } satisfies CounterProps,
         }),
       ],
     });

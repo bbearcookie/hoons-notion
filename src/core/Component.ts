@@ -1,6 +1,9 @@
 /**
  * Component 클래스는 컴포넌트의 기본 기능을 정의합니다.
  *
+ * `static tagName`: 컴포넌트가 생성될 때, HTML 태그 이름을 지정합니다.
+ * `protected static createElement`: 컴포넌트를 생성하고, DOM에 추가합니다.
+ *
  * `initialize`: 컴포넌트가 생성될 때, state나 props를 설정하고 자식 컴포넌트를 생성하는 작업을 수행하면 좋습니다.
  * `template`: 컴포넌트가 최초 마운트될 때, 렌더링 될 HTML을 반환해야 합니다.
  * `render`: 상태가 변경될 때 업데이트해야 할 동작을 수행해야 합니다. (예: DOM 조작)
@@ -33,14 +36,30 @@ export default class Component<TProps extends {} = {}, TState = any> {
     this.componentDidMount();
   }
 
+  static tagName = "div";
+
+  protected static createElement<TProps extends {}>({
+    parent,
+    props,
+    children,
+  }: {
+    parent?: HTMLElement;
+    props?: TProps;
+    children?: Component[];
+  }) {
+    const element = document.createElement(this.tagName);
+
+    if (parent) {
+      parent.appendChild(element);
+    }
+
+    return new this({ element, props, children });
+  }
+
   setState(nextState: TState) {
     this.state = nextState;
     this.render();
     this.componentDidUpdate();
-  }
-
-  template() {
-    return "";
   }
 
   private renderTemplate() {
@@ -53,6 +72,10 @@ export default class Component<TProps extends {} = {}, TState = any> {
     for (const child of this.children) {
       this.element.appendChild(child.element);
     }
+  }
+
+  template() {
+    return "";
   }
 
   initialize() {}

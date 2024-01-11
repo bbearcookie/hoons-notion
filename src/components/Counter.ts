@@ -1,26 +1,19 @@
 import Component from "@/core/Component";
 
-interface CounterProps {
+export interface CounterProps {
   initialCount: number;
   heading?: string;
 }
 
 export default class Counter extends Component<CounterProps, number> {
-  static create({
-    parent,
-    props,
-  }: {
-    parent?: HTMLElement;
-    props: CounterProps;
-  }) {
-    const element = document.createElement("div");
-    if (parent) {
-      parent.appendChild(element);
-    }
-    return new Counter({ element, props });
-  }
+  static tagName = "div";
 
   initialize() {
+    const element = this.element as HTMLDivElement;
+
+    element.setAttribute("type", "password");
+    element.style.height = "50px";
+
     this.state = this.props.initialCount;
     this.props = {
       heading: "기본 카운터",
