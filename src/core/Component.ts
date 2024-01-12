@@ -16,6 +16,7 @@ const componentMap = new WeakMap<HTMLElement, Component>();
  * `render`: 상태가 변경될 때 업데이트해야 할 동작을 수행해야 합니다. (예: DOM 업데이트 조작)
  * `componentDidMount`: 컴포넌트가 최초 마운트된 후에 호출됩니다. (예: 이벤트 리스너 등록)
  * `componentWillUnmount`: 컴포넌트의 element가 화면에서 제거되면 호출됩니다. (예: 이벤트 리스너 해제)
+ * `subscribe`: 컴포넌트가 Store를 구독하도록 설정합니다.
  */
 export default class Component<TProps extends {} = {}, TState = any> {
   readonly element: HTMLElement;
@@ -38,7 +39,8 @@ export default class Component<TProps extends {} = {}, TState = any> {
     this.state = {} as TState;
     this.children = children || [];
 
-    this.mount();
+    this.setupMount();
+    this.setupUnmount();
     this.initialize();
     this.render();
     this.componentDidMount();
@@ -77,7 +79,7 @@ export default class Component<TProps extends {} = {}, TState = any> {
     });
   }
 
-  private mount() {
+  private setupMount() {
     const { element, children } = this;
 
     this.element.innerHTML = this.template();
@@ -91,8 +93,10 @@ export default class Component<TProps extends {} = {}, TState = any> {
     }
 
     componentMap.set(element, this);
+  }
 
-    const observer = new MutationObserver((mutations) => {
+  private setupUnmount() {
+    const domObserver = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         mutation.removedNodes.forEach((node) => {
           const component = componentMap.get(node as HTMLElement);
@@ -110,7 +114,7 @@ export default class Component<TProps extends {} = {}, TState = any> {
       });
     });
 
-    observer.observe(element, {
+    domObserver.observe(this.element, {
       subtree: true,
       childList: true,
     });
