@@ -24,6 +24,5 @@ export const initNavigationEvents = (onNavigate: VoidFunction) => {
 };
 
 export const navigate = (to: string) => {
-  console.log(window.location.pathname);
   window.dispatchEvent(new NavigationEvent(to));
 };

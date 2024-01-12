@@ -1,13 +1,19 @@
 import Component from "@/core/Component";
-import DocumentPage from "@/pages/DocumentPage";
 import { initNavigationEvents } from "@/utils/route";
-import SecondPage from "./pages/SecondPage";
+import { router } from "./router";
 import Link from "./components/Link";
-import ThirdPage from "./pages/ThirdPage";
 
 export default class App extends Component {
   initialize() {
     const navbar = this.element.querySelector("#navbar") as HTMLElement;
+
+    Link.createElement<Link>({
+      parent: navbar,
+      props: {
+        to: "/documents/2",
+      },
+      children: ["2번째 다큐먼트"],
+    });
 
     Link.createElement<Link>({
       parent: navbar,
@@ -48,32 +54,14 @@ export default class App extends Component {
     const outlet = this.element.querySelector("#outlet") as HTMLElement;
     outlet.innerHTML = "";
 
-    switch (window.location.pathname) {
-      case "/one":
-        DocumentPage.createElement<DocumentPage>({
+    router
+      .filter(({ path }) => path.test(window.location.pathname))
+      .forEach(({ component, children }) => {
+        component.createElement({
           parent: outlet,
           props: {},
-          children: ["히히"],
+          children,
         });
-        break;
-      case "/two":
-        SecondPage.createElement<SecondPage>({
-          parent: outlet,
-          props: {},
-        });
-        break;
-      case "/three":
-        ThirdPage.createElement<ThirdPage>({
-          parent: outlet,
-          props: {},
-        });
-        break;
-      default:
-        break;
-    }
+      });
   }
 }
-
-// prevUrl이랑 nextUrl을 체크해야할듯.
-// prevUrl === nextUrl 이면 재렌더링 하지 않는다.
-// 그럼 prevUrl은 어디서 보내주지?
