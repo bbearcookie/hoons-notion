@@ -48,8 +48,4 @@ export default class SecondPage extends Component {
       <h1>Second Page</h1>
     `;
   }
-
-  componentWillUnmount(): void {
-    console.log("SecondPage: componentWillUnmount");
-  }
 }

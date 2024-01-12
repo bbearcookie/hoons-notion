@@ -5,8 +5,4 @@ export default class DocumentPage extends Component {
   template() {
     return template;
   }
-
-  componentWillUnmount(): void {
-    console.log("DocumentPage: componentWillUnmount");
-  }
 }

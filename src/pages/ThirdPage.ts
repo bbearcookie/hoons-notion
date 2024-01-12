@@ -6,9 +6,4 @@ export default class ThirdPage extends Component {
       <h1>Third Page</h1>
     `;
   }
-
-  componentWillUnmount(): void {
-    console.log("ThirdPage: componentWillUnmount");
-    console.log(this.element);
-  }
 }
