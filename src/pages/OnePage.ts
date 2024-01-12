@@ -4,6 +4,7 @@ import { counterStore } from "@/stores/CounterStore";
 export default class OnePage extends Component {
   initialize() {
     this.render = this.render.bind(this);
+    this.subscribe([counterStore]);
   }
 
   componentDidMount(): void {
@@ -16,13 +17,6 @@ export default class OnePage extends Component {
 
     incrementButton.addEventListener("click", () => counterStore.increase());
     decrementButton.addEventListener("click", () => counterStore.decrease());
-
-    counterStore.subscribe(this.render);
-  }
-
-  componentWillUnmount(): void {
-    console.log("OnePage: componentWillUnmount");
-    counterStore.unsubscribe(this.render);
   }
 
   template() {

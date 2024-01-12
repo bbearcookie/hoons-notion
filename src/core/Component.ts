@@ -1,3 +1,5 @@
+import Store from "./Store";
+
 type Children = (Component | string)[];
 
 // WeakMap을 사용하여 DOM Element와 Component 인스턴스를 연결합니다.
@@ -20,6 +22,7 @@ export default class Component<TProps extends {} = {}, TState = any> {
   props: TProps;
   state: TState;
   children: Children = [];
+  private subjects: Store<unknown>[] = [];
 
   constructor({
     element,
@@ -66,6 +69,14 @@ export default class Component<TProps extends {} = {}, TState = any> {
     this.render();
   }
 
+  subscribe(subjects: Store<unknown>[]) {
+    this.subjects = subjects;
+
+    subjects.forEach((subject) => {
+      subject.subscribe(this.render);
+    });
+  }
+
   private mount() {
     const { element, children } = this;
 
@@ -85,8 +96,16 @@ export default class Component<TProps extends {} = {}, TState = any> {
       mutations.forEach((mutation) => {
         mutation.removedNodes.forEach((node) => {
           const component = componentMap.get(node as HTMLElement);
-          componentMap.delete(node as HTMLElement);
-          component?.componentWillUnmount();
+
+          if (node === component?.element) {
+            componentMap.delete(node as HTMLElement);
+
+            component?.subjects.forEach((subject) => {
+              subject.unsubscribe(component.render);
+            });
+
+            component?.componentWillUnmount();
+          }
         });
       });
     });
