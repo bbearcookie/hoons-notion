@@ -46,25 +46,34 @@ export default class App extends Component {
 
   render() {
     const outlet = this.element.querySelector("#outlet") as HTMLElement;
+    outlet.innerHTML = "";
 
     switch (window.location.pathname) {
       case "/one":
-        outlet.innerHTML = DocumentPage.createElement<DocumentPage>({
+        DocumentPage.createElement<DocumentPage>({
+          parent: outlet,
           props: {},
-        }).element.innerHTML;
+          children: ["히히"],
+        });
         break;
       case "/two":
-        outlet.innerHTML = SecondPage.createElement<SecondPage>({
+        SecondPage.createElement<SecondPage>({
+          parent: outlet,
           props: {},
-        }).element.innerHTML;
+        });
         break;
       case "/three":
-        outlet.innerHTML = ThirdPage.createElement<ThirdPage>({
+        ThirdPage.createElement<ThirdPage>({
+          parent: outlet,
           props: {},
-        }).element.innerHTML;
+        });
         break;
       default:
         break;
     }
   }
 }
+
+// prevUrl이랑 nextUrl을 체크해야할듯.
+// prevUrl === nextUrl 이면 재렌더링 하지 않는다.
+// 그럼 prevUrl은 어디서 보내주지?

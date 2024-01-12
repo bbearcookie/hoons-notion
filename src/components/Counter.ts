@@ -11,8 +11,8 @@ export default class Counter extends Component<CounterProps, number> {
   initialize() {
     const element = this.element as HTMLDivElement;
 
-    element.setAttribute("type", "password");
-    element.style.height = "50px";
+    element.style.height = "75px";
+    element.style.backgroundColor = "lightgray";
 
     this.state = this.props.initialCount;
     this.props = {
@@ -31,24 +31,24 @@ export default class Counter extends Component<CounterProps, number> {
 
   componentDidMount() {
     this.element
-      .querySelector("#increment")
+      .querySelector("button[data-id=increment]")
       ?.addEventListener("click", () => this.handleIncrement());
     this.element
-      .querySelector("#decrement")
+      .querySelector("button[data-id=decrement]")
       ?.addEventListener("click", () => this.handleDecrement());
   }
 
   template() {
     return `
-      <p id="count"></p>
-      <button type="button" id="increment">Increment</button>
-      <button type="button" id="decrement">Decrement</button>
+      <p data-id="count"></p>
+      <button type="button" data-id="increment">Increment</button>
+      <button type="button" data-id="decrement">Decrement</button>
     `;
   }
 
   render() {
     this.element.querySelector(
-      "#count"
+      "[data-id=count]"
     )!.textContent = `${this.props.heading}: ${this.state}`;
   }
 }
