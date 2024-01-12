@@ -1,5 +1,8 @@
 type Children = (Component | string)[];
 
+// WeakMap을 사용하여 DOM Element와 Component 인스턴스를 연결합니다.
+const componentMap = new WeakMap<HTMLElement, Component>();
+
 /**
  * Component 클래스는 컴포넌트의 기본 기능을 정의합니다.
  *
@@ -10,6 +13,7 @@ type Children = (Component | string)[];
  * `template`: 컴포넌트가 최초 마운트될 때, 렌더링 될 HTML을 반환해야 합니다.
  * `render`: 상태가 변경될 때 업데이트해야 할 동작을 수행해야 합니다. (예: DOM 업데이트 조작)
  * `componentDidMount`: 컴포넌트가 최초 마운트된 후에 호출됩니다. (예: 이벤트 리스너 등록)
+ * `componentWillUnmount`: 컴포넌트의 element가 화면에서 제거되면 호출됩니다. (예: 이벤트 리스너 해제)
  */
 export default class Component<TProps extends {} = {}, TState = any> {
   readonly element: HTMLElement;
@@ -74,6 +78,23 @@ export default class Component<TProps extends {} = {}, TState = any> {
         element.appendChild(child.element);
       }
     }
+
+    componentMap.set(element, this);
+
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.removedNodes.forEach((node) => {
+          const component = componentMap.get(node as HTMLElement);
+          componentMap.delete(node as HTMLElement);
+          component?.componentWillUnmount();
+        });
+      });
+    });
+
+    observer.observe(element, {
+      subtree: true,
+      childList: true,
+    });
   }
 
   template() {
@@ -82,5 +103,6 @@ export default class Component<TProps extends {} = {}, TState = any> {
 
   initialize() {}
   componentDidMount() {}
+  componentWillUnmount() {}
   render() {}
 }
