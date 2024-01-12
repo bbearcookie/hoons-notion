@@ -2,6 +2,7 @@ import Component from "@/core/Component";
 import { initNavigationEvents } from "@/utils/route";
 import { router } from "./router";
 import Link from "./components/Link";
+import documentAPI from "./api/documentAPI";
 
 export default class App extends Component {
   initialize() {
@@ -48,6 +49,13 @@ export default class App extends Component {
       <nav id="navbar"></nav>
       <div id="outlet"></div>
     `;
+  }
+
+  componentDidMount() {
+    (async () => {
+      const document = await documentAPI.getDocuments();
+      console.log(document);
+    })();
   }
 
   render() {
