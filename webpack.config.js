@@ -12,6 +12,7 @@ export default {
   entry: "./src/main.ts",
   output: {
     path: path.resolve(__dirname, "dist"),
+    publicPath: "/",
     filename: "main.js",
     clean: true,
   },
@@ -25,6 +26,7 @@ export default {
     port: 3000,
     hot: true,
     historyApiFallback: true,
+    compress: true,
   },
 
   module: {
