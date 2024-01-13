@@ -1,23 +1,22 @@
 export default abstract class Store<TState> {
-  private state: TState;
+  private _state: TState;
   private listeners = new Set<VoidFunction>();
 
   constructor(initialState: TState) {
-    this.state = initialState;
+    this._state = initialState;
   }
 
-  getState() {
-    return this.state;
+  get state(): Readonly<TState> {
+    return this._state;
   }
 
   protected setState(nextState: TState) {
-    this.state = nextState;
+    this._state = nextState;
     this.notifyAll();
   }
 
   subscribe(listener: VoidFunction) {
     this.listeners.add(listener);
-    console.log(this.listeners);
   }
 
   unsubscribe(listener: VoidFunction) {

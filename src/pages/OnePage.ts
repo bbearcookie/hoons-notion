@@ -30,11 +30,9 @@ export default class OnePage extends Component {
         loginFormStore.setPassword(target.value);
       });
 
-    const form = this.element.querySelector("form") as HTMLFormElement;
-
     this.element.querySelector("form")?.addEventListener("submit", (event) => {
       event.preventDefault();
-      console.log(loginFormStore.getState());
+      console.log(loginFormStore.state);
     });
   }
 
@@ -54,20 +52,19 @@ export default class OnePage extends Component {
   }
 
   render() {
-    this.element.querySelector('[data-id="count"]')!.textContent = counterStore
-      .getState()
-      .count.toString();
+    this.element.querySelector('[data-id="count"]')!.textContent =
+      counterStore.state.count.toString();
 
     const usernameInput = this.element.querySelector(
       '[data-id="username"]'
     ) as HTMLInputElement;
 
-    usernameInput.value = loginFormStore.getState().username;
+    usernameInput.value = loginFormStore.state.username;
 
     const passwordInput = this.element.querySelector(
       '[data-id="password"]'
     ) as HTMLInputElement;
 
-    passwordInput.value = loginFormStore.getState().password;
+    passwordInput.value = loginFormStore.state.password;
   }
 }

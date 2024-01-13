@@ -8,14 +8,14 @@ interface State {
 class LoginFormStore extends Store<State> {
   setUsername(username: string) {
     this.setState({
-      ...this.getState(),
+      ...this.state,
       username: username,
     });
   }
 
   setPassword(password: string) {
     this.setState({
-      ...this.getState(),
+      ...this.state,
       password: password,
     });
   }
