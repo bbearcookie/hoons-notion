@@ -3,29 +3,32 @@ import SecondPage from "@/pages/SecondPage";
 import ThirdPage from "@/pages/ThirdPage";
 import OnePage from "./pages/OnePage";
 import CommentPage from "./pages/CommentPage";
+import Page from "./core/Page";
 import { appPageStore } from "./stores/PageStore";
 
-export const router = [
+type Router<T extends typeof Page> = {
+  path: RegExp;
+  parameters?: { name: string; index: number }[];
+  component: T;
+};
+
+const appPageRouter: Router<typeof Page>[] = [
   {
     path: /\/documents\/(\d+)\/?$/,
     parameters: [{ name: "documentId", index: 1 }],
     component: DocumentPage,
-    pageStore: appPageStore,
   },
   {
     path: /\/one/,
     component: OnePage,
-    pageStore: appPageStore,
   },
   {
     path: /\/two/,
     component: SecondPage,
-    pageStore: appPageStore,
   },
   {
     path: /\/three/,
     component: ThirdPage,
-    pageStore: appPageStore,
   },
   {
     path: /\/posts\/(\d+)\/comments\/(\d+)\/?$/,
@@ -34,6 +37,9 @@ export const router = [
       { name: "commentId", index: 2 },
     ],
     component: CommentPage,
-    pageStore: appPageStore,
   },
+];
+
+export const router = [
+  ...appPageRouter.map((route) => ({ ...route, pageStore: appPageStore })),
 ];

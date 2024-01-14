@@ -7,8 +7,6 @@ interface State {
   parameters: Record<string, string>;
 }
 
-// 내부에서 pageStore 객체에 대한 맥락을 빼야함.
-// 즉, 유틸 함수로 분리해야함. 스토어랑 결합되면안됨.
 export default class PageStore extends Store<State> {
   setParent(parent: HTMLElement) {
     this.setState({

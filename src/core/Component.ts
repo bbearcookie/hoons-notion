@@ -44,7 +44,7 @@ export default class Component<TProps extends {} = {}, TState = unknown> {
     this.setupUnmount();
     this.initialize();
 
-    // 상속받은 클래스에서 프로퍼티를 초기화할 때 까지 대기
+    // 상속한 클래스가 프로퍼티를 초기화할 때까지 대기
     setTimeout(() => {
       this.render();
       this.componentDidMount();
@@ -53,7 +53,7 @@ export default class Component<TProps extends {} = {}, TState = unknown> {
 
   static tagName = "div";
 
-  static createElement<T extends Component>({
+  protected static createElement<T extends Component>({
     parent,
     props,
     children,
