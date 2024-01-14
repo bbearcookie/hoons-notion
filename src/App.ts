@@ -1,6 +1,7 @@
 import Component from "@/core/Component";
 import { initNavigateEvent, handleNavigate } from "@/utils/route";
-import { appPageStore } from "./stores/PageStore";
+import { appPageStore, playgroundPageStore } from "./stores/PageStore";
+import { appPageRouter, playgroundPageRouter } from "./router";
 import Link from "./components/Link";
 import documentAPI from "./api/documentAPI";
 
@@ -8,7 +9,7 @@ export default class App extends Component {
   initialize() {
     const navbar = this.element.querySelector("#navbar") as HTMLElement;
     const outlet = this.element.querySelector("#outlet") as HTMLElement;
-    appPageStore.setParent(outlet);
+    playgroundPageStore.setParent(outlet);
 
     Link.createElement<Link>({
       parent: navbar,
@@ -59,7 +60,7 @@ export default class App extends Component {
     });
 
     initNavigateEvent((prev, to) =>
-      handleNavigate({ pageStore: appPageStore, prev, to })
+      handleNavigate({ router: playgroundPageRouter, prev, to })
     );
   }
 
@@ -73,7 +74,7 @@ export default class App extends Component {
 
   componentDidMount() {
     handleNavigate({
-      pageStore: appPageStore,
+      router: playgroundPageRouter,
       prev: "",
       to: window.location.pathname,
     });

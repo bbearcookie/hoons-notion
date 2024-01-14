@@ -4,20 +4,30 @@ import ThirdPage from "@/pages/ThirdPage";
 import OnePage from "./pages/OnePage";
 import CommentPage from "./pages/CommentPage";
 import Page from "./core/Page";
-import { appPageStore } from "./stores/PageStore";
+import PageStore, {
+  appPageStore,
+  playgroundPageStore,
+} from "./stores/PageStore";
 
-type Router<T extends typeof Page> = {
+type RouterWithoutPageStore<T extends typeof Page> = {
   path: RegExp;
   parameters?: { name: string; index: number }[];
   component: T;
 };
 
-const appPageRouter: Router<typeof Page>[] = [
+export type Router<T extends typeof Page> = RouterWithoutPageStore<T> & {
+  pageStore: PageStore;
+};
+
+const _appPageRouter: RouterWithoutPageStore<typeof Page>[] = [
   {
     path: /\/documents\/(\d+)\/?$/,
     parameters: [{ name: "documentId", index: 1 }],
     component: DocumentPage,
   },
+];
+
+const _playgroundPageRouter: RouterWithoutPageStore<typeof Page>[] = [
   {
     path: /\/one/,
     component: OnePage,
@@ -40,6 +50,15 @@ const appPageRouter: Router<typeof Page>[] = [
   },
 ];
 
-export const router = [
-  ...appPageRouter.map((route) => ({ ...route, pageStore: appPageStore })),
-];
+export const appPageRouter: Router<typeof Page>[] = _appPageRouter.map(
+  (route) => ({
+    ...route,
+    pageStore: appPageStore,
+  })
+);
+
+export const playgroundPageRouter: Router<typeof Page>[] =
+  _playgroundPageRouter.map((route) => ({
+    ...route,
+    pageStore: playgroundPageStore,
+  }));

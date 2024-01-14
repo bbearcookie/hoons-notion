@@ -29,3 +29,9 @@ export const appPageStore = new PageStore({
   page: null,
   parameters: {},
 });
+
+export const playgroundPageStore = new PageStore({
+  parent: null,
+  page: null,
+  parameters: {},
+});

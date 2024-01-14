@@ -1,5 +1,5 @@
-import { router } from "@/router";
-import PageStore from "@/stores/PageStore";
+import Page from "@/core/Page";
+import { type Router } from "@/router";
 
 const NAVIGATE_EVENT = "navigate";
 
@@ -37,19 +37,24 @@ export const initNavigateEvent = (
 };
 
 export const handleNavigate = ({
-  pageStore,
+  router,
   prev,
   to,
 }: {
-  pageStore: PageStore;
+  router: Router<typeof Page>[];
   prev: string;
   to: string;
 }) => {
   const prevRoute = router.find((route) => route.path.test(prev));
   const toRoute = router.find((route) => route.path.test(to));
+  const pageStore = toRoute?.pageStore;
 
-  if (!toRoute || prev === to || !pageStore.state.parent) {
+  if (!toRoute || prev === to) {
     return;
+  }
+
+  if (!pageStore || pageStore?.state.parent === null) {
+    throw new Error("PageStore is not initialized");
   }
 
   const result = toRoute.path.exec(to)!!;
