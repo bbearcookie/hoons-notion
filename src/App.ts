@@ -49,6 +49,14 @@ export default class App extends Component {
       children: ["링크3"],
     });
 
+    Link.createElement<Link>({
+      parent: navbar,
+      props: {
+        to: "/posts/1/comments/2",
+      },
+      children: ["1번째 포스트의 2번째 댓글"],
+    });
+
     initNavigationEvents((prev, to) => this.handleNavigation(prev, to));
     this.handleNavigation("", window.location.pathname);
   }

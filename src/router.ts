@@ -2,6 +2,7 @@ import DocumentPage from "@/pages/DocumentPage";
 import SecondPage from "@/pages/SecondPage";
 import ThirdPage from "@/pages/ThirdPage";
 import OnePage from "./pages/OnePage";
+import CommentPage from "./pages/CommentPage";
 
 export const router = [
   {
@@ -20,5 +21,13 @@ export const router = [
   {
     path: /\/three/,
     component: ThirdPage,
+  },
+  {
+    path: /\/posts\/(\d+)\/comments\/(\d+)\/?$/,
+    parameters: [
+      { name: "postId", index: 1 },
+      { name: "commentId", index: 2 },
+    ],
+    component: CommentPage,
   },
 ];
