@@ -1,13 +1,14 @@
 import Component from "@/core/Component";
-import { initNavigationEvents } from "@/utils/route";
-import { pageStore } from "./stores/PageStore";
+import { initNavigateEvent, handleNavigate } from "@/utils/route";
+import { appPageStore } from "./stores/PageStore";
 import Link from "./components/Link";
 import documentAPI from "./api/documentAPI";
 
 export default class App extends Component {
   initialize() {
     const navbar = this.element.querySelector("#navbar") as HTMLElement;
-    pageStore.setParent(this.element.querySelector("#outlet") as HTMLElement);
+    const outlet = this.element.querySelector("#outlet") as HTMLElement;
+    appPageStore.setParent(outlet);
 
     Link.createElement<Link>({
       parent: navbar,
@@ -57,7 +58,9 @@ export default class App extends Component {
       children: ["1번째 포스트의 2번째 댓글"],
     });
 
-    initNavigationEvents((prev, to) => pageStore.handleNavigation(prev, to));
+    initNavigateEvent((prev, to) =>
+      handleNavigate({ pageStore: appPageStore, prev, to })
+    );
   }
 
   template() {
@@ -69,7 +72,11 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    pageStore.handleNavigation("", window.location.pathname);
+    handleNavigate({
+      pageStore: appPageStore,
+      prev: "",
+      to: window.location.pathname,
+    });
 
     (async () => {
       const document = await documentAPI.getDocuments();

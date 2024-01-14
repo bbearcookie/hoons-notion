@@ -1,6 +1,5 @@
 import Component from "@/core/Component";
 import Store from "@/core/Store";
-import { router } from "@/router";
 
 interface State {
   parent: HTMLElement | null;
@@ -8,41 +7,9 @@ interface State {
   parameters: Record<string, string>;
 }
 
-class PageStore extends Store<State> {
-  handleNavigation(prev: string, to: string) {
-    const prevRoute = router.find((route) => route.path.test(prev));
-    const toRoute = router.find((route) => route.path.test(to));
-
-    if (!toRoute || prev === to || !this.state.parent) {
-      return;
-    }
-
-    const result = toRoute.path.exec(to)!!;
-
-    const parameters = toRoute.parameters?.reduce((acc, { name, index }) => {
-      acc[name] = result[index];
-      return acc;
-    }, {} as Record<string, string>);
-
-    if (prevRoute?.component === toRoute.component) {
-      pageStore.setPage({
-        ...pageStore.state,
-        parameters: parameters ?? {},
-      });
-    } else {
-      this.state.parent.innerHTML = "";
-
-      pageStore.setPage({
-        ...pageStore.state,
-        page: toRoute?.component.createElement({
-          parent: this.state.parent,
-          props: {},
-        }),
-        parameters: parameters ?? {},
-      });
-    }
-  }
-
+// 내부에서 pageStore 객체에 대한 맥락을 빼야함.
+// 즉, 유틸 함수로 분리해야함. 스토어랑 결합되면안됨.
+export default class PageStore extends Store<State> {
   setParent(parent: HTMLElement) {
     this.setState({
       ...this.state,
@@ -59,7 +26,7 @@ class PageStore extends Store<State> {
   }
 }
 
-export const pageStore = new PageStore({
+export const appPageStore = new PageStore({
   parent: null,
   page: null,
   parameters: {},

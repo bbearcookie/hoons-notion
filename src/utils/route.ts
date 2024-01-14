@@ -1,3 +1,6 @@
+import { router } from "@/router";
+import PageStore from "@/stores/PageStore";
+
 const NAVIGATE_EVENT = "navigate";
 
 class NavigationEvent extends CustomEvent<{ prev: string; to: string }> {
@@ -6,7 +9,11 @@ class NavigationEvent extends CustomEvent<{ prev: string; to: string }> {
   }
 }
 
-export const initNavigationEvents = (
+export const navigate = (to: string) => {
+  window.dispatchEvent(new NavigationEvent(to));
+};
+
+export const initNavigateEvent = (
   onNavigate: (prev: string, to: string) => void
 ) => {
   window.addEventListener(NAVIGATE_EVENT, (e: Event) => {
@@ -29,6 +36,44 @@ export const initNavigationEvents = (
   });
 };
 
-export const navigate = (to: string) => {
-  window.dispatchEvent(new NavigationEvent(to));
+export const handleNavigate = ({
+  pageStore,
+  prev,
+  to,
+}: {
+  pageStore: PageStore;
+  prev: string;
+  to: string;
+}) => {
+  const prevRoute = router.find((route) => route.path.test(prev));
+  const toRoute = router.find((route) => route.path.test(to));
+
+  if (!toRoute || prev === to || !pageStore.state.parent) {
+    return;
+  }
+
+  const result = toRoute.path.exec(to)!!;
+
+  const parameters = toRoute.parameters?.reduce((acc, { name, index }) => {
+    acc[name] = result[index];
+    return acc;
+  }, {} as Record<string, string>);
+
+  if (prevRoute?.component === toRoute.component) {
+    pageStore.setPage({
+      ...pageStore.state,
+      parameters: parameters ?? {},
+    });
+  } else {
+    pageStore.state.parent.innerHTML = "";
+
+    pageStore.setPage({
+      ...pageStore.state,
+      page: toRoute?.component.createPage({
+        parent: pageStore.state.parent,
+        pageStore,
+      }),
+      parameters: parameters ?? {},
+    });
+  }
 };

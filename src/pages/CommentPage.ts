@@ -1,10 +1,8 @@
-import Component from "@/core/Component";
-import { pageStore } from "@/stores/PageStore";
+import Page from "@/core/Page";
 
-export default class CommentPage extends Component {
+export default class CommentPage extends Page {
   initialize() {
     this.render = this.render.bind(this);
-    this.subscribe([pageStore]);
   }
 
   template() {
@@ -16,8 +14,8 @@ export default class CommentPage extends Component {
   }
 
   render() {
-    const postId = Number(pageStore.state.parameters.postId) || 0;
-    const commentId = Number(pageStore.state.parameters.commentId) || 0;
+    const postId = Number(this.pageStore.state.parameters.postId) || 0;
+    const commentId = Number(this.pageStore.state.parameters.commentId) || 0;
 
     this.element.querySelector(
       '[data-id="post-id"]'

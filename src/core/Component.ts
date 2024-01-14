@@ -23,12 +23,13 @@ export default class Component<TProps extends {} = {}, TState = unknown> {
   props: TProps;
   state: TState;
   children: Children = [];
-  private subjects: Store<unknown>[] = [];
+  private subjects: Store<unknown>[] = []; // 이 컴포넌트가 구독하고 있는 Store 인스턴스들
 
   constructor({
     element,
     props,
     children,
+    ...args
   }: {
     element: HTMLElement;
     props?: TProps;
@@ -42,8 +43,12 @@ export default class Component<TProps extends {} = {}, TState = unknown> {
     this.setupMount();
     this.setupUnmount();
     this.initialize();
-    this.render();
-    this.componentDidMount();
+
+    // 상속받은 클래스에서 프로퍼티를 초기화할 때 까지 대기
+    setTimeout(() => {
+      this.render();
+      this.componentDidMount();
+    }, 0);
   }
 
   static tagName = "div";
@@ -72,7 +77,7 @@ export default class Component<TProps extends {} = {}, TState = unknown> {
   }
 
   subscribe(subjects: Store<unknown>[]) {
-    this.subjects = subjects;
+    this.subjects = [...this.subjects, ...subjects];
 
     subjects.forEach((subject) => {
       subject.subscribe(this.render);

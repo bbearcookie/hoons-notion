@@ -1,8 +1,8 @@
-import Component from "@/core/Component";
+import Page from "@/core/Page";
 import { counterStore } from "@/stores/CounterStore";
 import { loginFormStore } from "@/stores/LoginFormStore";
 
-export default class OnePage extends Component {
+export default class OnePage extends Page {
   initialize() {
     this.render = this.render.bind(this);
     this.subscribe([counterStore, loginFormStore]);

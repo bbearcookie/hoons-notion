@@ -1,11 +1,9 @@
-import Component from "@/core/Component";
 import template from "./DocumentPage.html";
-import { pageStore } from "@/stores/PageStore";
+import Page from "@/core/Page";
 
-export default class DocumentPage extends Component {
+export default class DocumentPage extends Page {
   initialize() {
     this.render = this.render.bind(this);
-    this.subscribe([pageStore]);
   }
 
   template() {
@@ -13,7 +11,7 @@ export default class DocumentPage extends Component {
   }
 
   render() {
-    const documentId = Number(pageStore.state.parameters.documentId) || 0;
+    const documentId = Number(this.pageStore.state.parameters.documentId) || 0;
 
     this.element.querySelector(
       '[data-id="document-id"]'

@@ -1,9 +1,11 @@
 import Counter from "@/components/Counter";
 import Form from "@/components/Form";
-import Component from "@/core/Component";
+import Page from "@/core/Page";
 
-export default class SecondPage extends Component {
+export default class SecondPage extends Page {
   initialize() {
+    this.render = this.render.bind(this);
+
     Counter.createElement<Counter>({
       parent: this.element,
       props: {
