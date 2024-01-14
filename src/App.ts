@@ -1,7 +1,7 @@
 import Component from "@/core/Component";
 import { initNavigateEvent, handleNavigate } from "@/utils/route";
-import { appPageStore, playgroundPageStore } from "./stores/PageStore";
-import { appPageRouter, playgroundPageRouter } from "./router";
+import { appPageStore } from "./stores/PageStore";
+import { appPageRouter } from "./router";
 import Link from "./components/Link";
 import documentAPI from "./api/documentAPI";
 
@@ -9,7 +9,15 @@ export default class App extends Component {
   initialize() {
     const navbar = this.element.querySelector("#navbar") as HTMLElement;
     const outlet = this.element.querySelector("#outlet") as HTMLElement;
-    playgroundPageStore.setParent(outlet);
+    appPageStore.setParent(outlet);
+
+    Link.createElement<Link>({
+      parent: navbar,
+      props: {
+        to: "/playground",
+      },
+      children: ["플레이그라운드"],
+    });
 
     Link.createElement<Link>({
       parent: navbar,
@@ -27,40 +35,8 @@ export default class App extends Component {
       children: ["2번째 다큐먼트"],
     });
 
-    Link.createElement<Link>({
-      parent: navbar,
-      props: {
-        to: "/one",
-      },
-      children: ["링크1"],
-    });
-
-    Link.createElement<Link>({
-      parent: navbar,
-      props: {
-        to: "/two",
-      },
-      children: ["링크2"],
-    });
-
-    Link.createElement<Link>({
-      parent: navbar,
-      props: {
-        to: "/three",
-      },
-      children: ["링크3"],
-    });
-
-    Link.createElement<Link>({
-      parent: navbar,
-      props: {
-        to: "/posts/1/comments/2",
-      },
-      children: ["1번째 포스트의 2번째 댓글"],
-    });
-
     initNavigateEvent((prev, to) =>
-      handleNavigate({ router: playgroundPageRouter, prev, to })
+      handleNavigate({ router: appPageRouter, prev, to })
     );
   }
 
@@ -74,7 +50,7 @@ export default class App extends Component {
 
   componentDidMount() {
     handleNavigate({
-      router: playgroundPageRouter,
+      router: appPageRouter,
       prev: "",
       to: window.location.pathname,
     });

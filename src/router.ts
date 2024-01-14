@@ -3,6 +3,7 @@ import SecondPage from "@/pages/SecondPage";
 import ThirdPage from "@/pages/ThirdPage";
 import OnePage from "./pages/OnePage";
 import CommentPage from "./pages/CommentPage";
+import PlaygroundPage from "./pages/PlaygroundPage";
 import Page from "./core/Page";
 import PageStore, {
   appPageStore,
@@ -20,6 +21,13 @@ export type Router<T extends typeof Page> = RouterWithoutPageStore<T> & {
 };
 
 const _appPageRouter: RouterWithoutPageStore<typeof Page>[] = [
+  {
+    path: /\/playground/,
+    component: PlaygroundPage,
+  },
+];
+
+const _documentPageRouter: RouterWithoutPageStore<typeof Page>[] = [
   {
     path: /\/documents\/(\d+)\/?$/,
     parameters: [{ name: "documentId", index: 1 }],
@@ -56,6 +64,12 @@ export const appPageRouter: Router<typeof Page>[] = _appPageRouter.map(
     pageStore: appPageStore,
   })
 );
+
+export const documentPageRouter: Router<typeof Page>[] =
+  _documentPageRouter.map((route) => ({
+    ...route,
+    pageStore: appPageStore,
+  }));
 
 export const playgroundPageRouter: Router<typeof Page>[] =
   _playgroundPageRouter.map((route) => ({
