@@ -18,7 +18,7 @@ const componentMap = new WeakMap<HTMLElement, Component>();
  * `componentWillUnmount`: 컴포넌트의 element가 화면에서 제거되면 호출됩니다. (예: 이벤트 리스너 해제)
  * `subscribe`: 컴포넌트가 Store를 구독하도록 설정합니다.
  */
-export default class Component<TProps extends {} = {}, TState = any> {
+export default class Component<TProps extends {} = {}, TState = unknown> {
   readonly element: HTMLElement;
   props: TProps;
   state: TState;

@@ -1,21 +1,12 @@
 import Component from "@/core/Component";
 import { initNavigationEvents } from "@/utils/route";
 import { router } from "./router";
+import { pageStore } from "./stores/PageStore";
 import Link from "./components/Link";
 import documentAPI from "./api/documentAPI";
 
-interface AppState {
-  page?: Component<any, any>;
-  parameters: Record<string, string>;
-}
-
-export default class App extends Component<{}, AppState> {
+export default class App extends Component {
   initialize() {
-    this.state = {
-      page: undefined,
-      parameters: {},
-    };
-
     const navbar = this.element.querySelector("#navbar") as HTMLElement;
 
     Link.createElement<Link>({
@@ -59,7 +50,6 @@ export default class App extends Component<{}, AppState> {
     });
 
     initNavigationEvents((prev, to) => this.handleNavigation(prev, to));
-
     this.handleNavigation("", window.location.pathname);
   }
 
@@ -67,13 +57,11 @@ export default class App extends Component<{}, AppState> {
     const prevRoute = router.find((route) => route.path.test(prev));
     const toRoute = router.find((route) => route.path.test(to));
 
-    console.log("handleNavigation");
-
     if (!toRoute || prev === to) {
       return;
     }
 
-    const result = toRoute.path.exec(window.location.pathname)!!;
+    const result = toRoute.path.exec(to)!!;
 
     const parameters = toRoute.parameters?.reduce((acc, { name, index }) => {
       acc[name] = result[index];
@@ -81,16 +69,16 @@ export default class App extends Component<{}, AppState> {
     }, {} as Record<string, string>);
 
     if (prevRoute?.component === toRoute.component) {
-      this.setState({
-        ...this.state,
+      pageStore.setPage({
+        ...pageStore.state,
         parameters: parameters ?? {},
       });
     } else {
       const outlet = this.element.querySelector("#outlet") as HTMLElement;
       outlet.innerHTML = "";
 
-      this.setState({
-        ...this.state,
+      pageStore.setPage({
+        ...pageStore.state,
         page: toRoute?.component.createElement({
           parent: outlet,
           props: {},
@@ -98,8 +86,6 @@ export default class App extends Component<{}, AppState> {
         parameters: parameters ?? {},
       });
     }
-
-    this.state.page?.render();
   }
 
   template() {
