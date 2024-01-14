@@ -6,20 +6,26 @@ class NavigationEvent extends CustomEvent<{ prev: string; to: string }> {
   }
 }
 
-export const initNavigationEvents = (onNavigate: VoidFunction) => {
+export const initNavigationEvents = (
+  onNavigate: (prev: string, to: string) => void
+) => {
   window.addEventListener(NAVIGATE_EVENT, (e: Event) => {
     if (e instanceof NavigationEvent) {
       if (e.detail.prev === e.detail.to) {
         history.replaceState(e.detail.prev, "", e.detail.to);
       } else {
         history.pushState(e.detail.prev, "", e.detail.to);
-        onNavigate();
       }
+
+      onNavigate(e.detail.prev, e.detail.to);
     }
   });
 
-  window.addEventListener("popstate", (e: Event) => {
-    onNavigate();
+  window.addEventListener("popstate", (e: PopStateEvent) => {
+    const prev = e.state;
+    const to = window.location.pathname;
+
+    onNavigate(prev, to);
   });
 };
 

@@ -5,9 +5,9 @@ import OnePage from "./pages/OnePage";
 
 export const router = [
   {
-    path: /^\/documents\/\d/,
+    path: /\/documents\/(\d+)\/?$/,
+    parameters: [{ name: "documentId", index: 1 }],
     component: DocumentPage,
-    children: ["다큐먼트입니다"],
   },
   {
     path: /\/one/,
