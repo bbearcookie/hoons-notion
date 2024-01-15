@@ -5,74 +5,42 @@ import OnePage from "./pages/OnePage";
 import CommentPage from "./pages/CommentPage";
 import PlaygroundPage from "./pages/PlaygroundPage";
 import Page from "./core/Page";
-import PageStore, {
-  appPageStore,
-  playgroundPageStore,
-} from "./stores/PageStore";
 
-type RouterWithoutPageStore<T extends typeof Page> = {
+export type Router<T extends typeof Page> = {
   path: RegExp;
   parameters?: { name: string; index: number }[];
   component: T;
+  children?: Router<T>[];
 };
 
-export type Router<T extends typeof Page> = RouterWithoutPageStore<T> & {
-  pageStore: PageStore;
-};
+// 하나의 라우터만 가지고, 재귀적으로 탐색하도록 해야한다.
+// App이 렌더링되면 경로를 체크해서 페이지를 찾아야하기 때문이다.
 
-const _appPageRouter: RouterWithoutPageStore<typeof Page>[] = [
+export const newRouter: Router<typeof Page>[] = [
   {
     path: /\/playground/,
     component: PlaygroundPage,
-  },
-];
-
-const _documentPageRouter: RouterWithoutPageStore<typeof Page>[] = [
-  {
-    path: /\/documents\/(\d+)\/?$/,
-    parameters: [{ name: "documentId", index: 1 }],
-    component: DocumentPage,
-  },
-];
-
-const _playgroundPageRouter: RouterWithoutPageStore<typeof Page>[] = [
-  {
-    path: /\/one/,
-    component: OnePage,
-  },
-  {
-    path: /\/two/,
-    component: SecondPage,
-  },
-  {
-    path: /\/three/,
-    component: ThirdPage,
-  },
-  {
-    path: /\/posts\/(\d+)\/comments\/(\d+)\/?$/,
-    parameters: [
-      { name: "postId", index: 1 },
-      { name: "commentId", index: 2 },
+    children: [
+      {
+        path: /\/one/,
+        component: OnePage,
+      },
+      {
+        path: /\/two/,
+        component: SecondPage,
+      },
+      {
+        path: /\/three/,
+        component: ThirdPage,
+      },
+      {
+        path: /\/posts\/(\d+)\/comments\/(\d+)\/?$/,
+        parameters: [
+          { name: "postId", index: 1 },
+          { name: "commentId", index: 2 },
+        ],
+        component: CommentPage,
+      },
     ],
-    component: CommentPage,
   },
 ];
-
-export const appPageRouter: Router<typeof Page>[] = _appPageRouter.map(
-  (route) => ({
-    ...route,
-    pageStore: appPageStore,
-  })
-);
-
-export const documentPageRouter: Router<typeof Page>[] =
-  _documentPageRouter.map((route) => ({
-    ...route,
-    pageStore: appPageStore,
-  }));
-
-export const playgroundPageRouter: Router<typeof Page>[] =
-  _playgroundPageRouter.map((route) => ({
-    ...route,
-    pageStore: playgroundPageStore,
-  }));

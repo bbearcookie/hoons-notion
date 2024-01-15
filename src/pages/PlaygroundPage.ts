@@ -1,21 +1,18 @@
 import Link from "@/components/Link";
 import Page from "@/core/Page";
-import { playgroundPageRouter } from "@/router";
-import { playgroundPageStore } from "@/stores/PageStore";
-import { handleNavigate, initNavigateEvent } from "@/utils/route";
+import { pageStore } from "@/stores/PageStore";
 
 export default class PlaygroundPage extends Page {
   initialize() {
     this.render = this.render.bind(this);
+    this.subscribe([pageStore]);
 
     const navbar = this.element.querySelector("#navbar") as HTMLElement;
-    const outlet = this.element.querySelector("#outlet") as HTMLElement;
-    playgroundPageStore.setParent(this.element);
 
     Link.createElement<Link>({
       parent: navbar,
       props: {
-        to: "/one",
+        to: "/playground/one",
       },
       children: ["링크1"],
     });
@@ -23,7 +20,7 @@ export default class PlaygroundPage extends Page {
     Link.createElement<Link>({
       parent: navbar,
       props: {
-        to: "/two",
+        to: "/playground/two",
       },
       children: ["링크2"],
     });
@@ -31,7 +28,7 @@ export default class PlaygroundPage extends Page {
     Link.createElement<Link>({
       parent: navbar,
       props: {
-        to: "/three",
+        to: "/playground/three",
       },
       children: ["링크3"],
     });
@@ -39,29 +36,17 @@ export default class PlaygroundPage extends Page {
     Link.createElement<Link>({
       parent: navbar,
       props: {
-        to: "/posts/1/comments/2",
+        to: "/playground/posts/1/comments/2",
       },
       children: ["1번째 포스트의 2번째 댓글"],
     });
-
-    initNavigateEvent((prev, to) =>
-      handleNavigate({ router: playgroundPageRouter, prev, to })
-    );
   }
 
   template() {
     return `
-    <h1 class="line-through italic">Hello, Playground!</h1>
-    <nav id="navbar"></nav>
-    <div id="outlet"></div>
+      <h1 class="line-through italic">Hello, Playground!</h1>
+      <nav id="navbar"></nav>
+      <div data-id="outlet"></div>
     `;
-  }
-
-  componentDidMount() {
-    handleNavigate({
-      router: playgroundPageRouter,
-      prev: "",
-      to: window.location.pathname,
-    });
   }
 }

@@ -29,7 +29,6 @@ export default class Component<TProps extends {} = {}, TState = unknown> {
     element,
     props,
     children,
-    ...args
   }: {
     element: HTMLElement;
     props?: TProps;
@@ -43,12 +42,8 @@ export default class Component<TProps extends {} = {}, TState = unknown> {
     this.setupMount();
     this.setupUnmount();
     this.initialize();
-
-    // 상속한 클래스가 프로퍼티를 초기화할 때까지 대기
-    setTimeout(() => {
-      this.render();
-      this.componentDidMount();
-    }, 0);
+    this.render();
+    this.componentDidMount();
   }
 
   static tagName = "div";

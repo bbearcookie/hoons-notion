@@ -1,35 +1,21 @@
 import Component from "./Component";
-import PageStore from "@/stores/PageStore";
 
 export default class Page extends Component {
-  pageStore: PageStore;
+  outlet: HTMLElement;
 
-  constructor({
-    element,
-    pageStore,
-    ...args
-  }: {
-    element: HTMLElement;
-    pageStore: PageStore;
-  }) {
+  constructor({ element, ...args }: { element: HTMLElement }) {
     super({ element, ...args });
-    this.pageStore = pageStore;
-    this.subscribe([this.pageStore]);
+
+    this.outlet = this.element.querySelector("[data-id=outlet]") as HTMLElement;
   }
 
-  static createPage({
-    parent,
-    pageStore,
-  }: {
-    parent: HTMLElement;
-    pageStore: PageStore;
-  }) {
+  static createElement({ parent }: { parent?: HTMLElement }) {
     const element = document.createElement(this.tagName);
 
     if (parent) {
       parent.appendChild(element);
     }
 
-    return new this({ element, pageStore });
+    return new this({ element });
   }
 }

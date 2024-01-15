@@ -1,11 +1,12 @@
 import Page from "@/core/Page";
 import { counterStore } from "@/stores/CounterStore";
 import { loginFormStore } from "@/stores/LoginFormStore";
+import { pageStore } from "@/stores/PageStore";
 
 export default class OnePage extends Page {
   initialize() {
     this.render = this.render.bind(this);
-    this.subscribe([counterStore, loginFormStore]);
+    this.subscribe([pageStore, counterStore, loginFormStore]);
   }
 
   componentDidMount(): void {

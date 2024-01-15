@@ -1,7 +1,5 @@
 import Component from "@/core/Component";
-import { initNavigateEvent, handleNavigate } from "@/utils/route";
-import { appPageStore } from "./stores/PageStore";
-import { appPageRouter } from "./router";
+import { initNavigateEvent, handleNewNavigate } from "@/utils/route";
 import Link from "./components/Link";
 import documentAPI from "./api/documentAPI";
 
@@ -9,7 +7,6 @@ export default class App extends Component {
   initialize() {
     const navbar = this.element.querySelector("#navbar") as HTMLElement;
     const outlet = this.element.querySelector("#outlet") as HTMLElement;
-    appPageStore.setParent(outlet);
 
     Link.createElement<Link>({
       parent: navbar,
@@ -17,6 +14,14 @@ export default class App extends Component {
         to: "/playground",
       },
       children: ["플레이그라운드"],
+    });
+
+    Link.createElement<Link>({
+      parent: navbar,
+      props: {
+        to: "/playground/posts/1/comments/2",
+      },
+      children: ["플레이그라운드 포스트1 코멘트2"],
     });
 
     Link.createElement<Link>({
@@ -36,7 +41,7 @@ export default class App extends Component {
     });
 
     initNavigateEvent((prev, to) =>
-      handleNavigate({ router: appPageRouter, prev, to })
+      handleNewNavigate({ parent: outlet, prev, to })
     );
   }
 
@@ -49,15 +54,15 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    handleNavigate({
-      router: appPageRouter,
+    // (async () => {
+    //   const document = await documentAPI.getDocuments();
+    //   console.log(document);
+    // })();
+
+    handleNewNavigate({
       prev: "",
       to: window.location.pathname,
+      parent: this.element.querySelector("#outlet") as HTMLElement,
     });
-
-    (async () => {
-      const document = await documentAPI.getDocuments();
-      console.log(document);
-    })();
   }
 }

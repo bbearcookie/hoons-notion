@@ -1,8 +1,10 @@
 import Page from "@/core/Page";
+import { pageStore } from "@/stores/PageStore";
 
 export default class CommentPage extends Page {
   initialize() {
     this.render = this.render.bind(this);
+    this.subscribe([pageStore]);
   }
 
   template() {
@@ -14,13 +16,12 @@ export default class CommentPage extends Page {
   }
 
   render() {
-    const postId = Number(this.pageStore.state.parameters.postId) || 0;
-    const commentId = Number(this.pageStore.state.parameters.commentId) || 0;
+    const postId = Number(pageStore.state.parameters.postId) || 0;
+    const commentId = Number(pageStore.state.parameters.commentId) || 0;
 
     this.element.querySelector(
       '[data-id="post-id"]'
     )!.textContent = `${postId.toString()}번째 포스트`;
-
     this.element.querySelector(
       '[data-id="comment-id"]'
     )!.textContent = `${commentId.toString()}번째 댓글`;
