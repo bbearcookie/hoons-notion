@@ -1,5 +1,5 @@
-import Counter from "@/components/Counter";
-import Form from "@/components/Form";
+import Counter from "@/components/playground/Counter";
+import Form from "@/components/playground/Form";
 import Page from "@/core/Page";
 import { pageStore } from "@/stores/PageStore";
 

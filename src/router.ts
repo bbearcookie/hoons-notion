@@ -1,10 +1,10 @@
 import DocumentPage from "@/pages/DocumentPage";
-import SecondPage from "@/pages/SecondPage";
-import ThirdPage from "@/pages/ThirdPage";
-import OnePage from "./pages/OnePage";
-import CommentPage from "./pages/CommentPage";
-import PlaygroundPage from "./pages/PlaygroundPage";
-import Page from "./core/Page";
+import SecondPage from "@/pages/playground/SecondPage";
+import ThirdPage from "@/pages/playground/ThirdPage";
+import OnePage from "@/pages/playground/OnePage";
+import CommentPage from "@/pages/playground/CommentPage";
+import PlaygroundPage from "@/pages/playground/PlaygroundPage";
+import Page from "@/core/Page";
 
 export type Router<T extends typeof Page> = {
   path: RegExp;

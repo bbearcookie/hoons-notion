@@ -1,6 +1,6 @@
 import Page from "@/core/Page";
-import { counterStore } from "@/stores/CounterStore";
-import { loginFormStore } from "@/stores/LoginFormStore";
+import { counterStore } from "@/stores/playground/CounterStore";
+import { loginFormStore } from "@/stores/playground/LoginFormStore";
 import { pageStore } from "@/stores/PageStore";
 
 export default class OnePage extends Page {
