@@ -13,9 +13,6 @@ export type Router<T extends typeof Page> = {
   children?: Router<T>[];
 };
 
-// 하나의 라우터만 가지고, 재귀적으로 탐색하도록 해야한다.
-// App이 렌더링되면 경로를 체크해서 페이지를 찾아야하기 때문이다.
-
 export const newRouter: Router<typeof Page>[] = [
   {
     path: /\/playground/,
@@ -42,5 +39,10 @@ export const newRouter: Router<typeof Page>[] = [
         component: CommentPage,
       },
     ],
+  },
+  {
+    path: /\/documents\/(\d+)\/?$/,
+    parameters: [{ name: "documentId", index: 1 }],
+    component: DocumentPage,
   },
 ];

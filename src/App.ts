@@ -1,5 +1,5 @@
 import Component from "@/core/Component";
-import { initNavigateEvent, handleNewNavigate } from "@/utils/route";
+import { initNavigateEvent, handleNavigate } from "@/utils/route";
 import Link from "./components/Link";
 import documentAPI from "./api/documentAPI";
 
@@ -41,7 +41,7 @@ export default class App extends Component {
     });
 
     initNavigateEvent((prev, to) =>
-      handleNewNavigate({ parent: outlet, prev, to })
+      handleNavigate({ parent: outlet, prev, to })
     );
   }
 
@@ -59,7 +59,7 @@ export default class App extends Component {
     //   console.log(document);
     // })();
 
-    handleNewNavigate({
+    handleNavigate({
       prev: "",
       to: window.location.pathname,
       parent: this.element.querySelector("#outlet") as HTMLElement,
