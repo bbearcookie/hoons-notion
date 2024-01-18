@@ -1,6 +1,6 @@
 import Page from "@/core/Page";
 import { pageStore } from "@/stores/PageStore";
-import { newRouter, type Router } from "@/router";
+import { router, type Router } from "@/router";
 
 const NAVIGATE_EVENT = "navigate";
 
@@ -59,22 +59,23 @@ export const handleNavigate = ({
   prev: string;
   to: string;
 }) => {
-  const toRoute = newRouter.find((route) => route.path.test(to));
-  const componentClasses: ComponentClass[] = [];
-  const componentObjects: Page[] = [];
+  const toRoute = router.find((route) => route.path.test(to));
+  const componentClasses: ComponentClass[] = []; // 화면에 그려야 할 페이지의 클래스
+  const componentObjects: Page[] = []; // 화면에 그린 페이지의 인스턴스
   const parameters: Record<string, string> = {};
 
   if (!toRoute || prev === to) {
     return;
   }
 
-  searchRoute(newRouter, to);
+  searchPages([toRoute], to);
+  renderPages();
 
-  function searchRoute(router: Router<typeof Page>[], to: string) {
+  /** 경로를 통해 화면에 그려야 할 모든 페이지를 알아내고 Path Parameter를 추출한다. */
+  function searchPages(router: Router<typeof Page>[], to: string) {
     const restRoute = router.find((route) => route.path.test(to));
 
     if (restRoute) {
-      // 경로를 통해 화면에 그려야 할 모든 페이지를 알아내고 Path Parameter를 추출한다.
       const regxResult = restRoute.path.exec(to)!!;
       const restPath = regxResult.input.replace(regxResult[0], "");
 
@@ -91,51 +92,49 @@ export const handleNavigate = ({
         component: restRoute.component,
       });
 
-      searchRoute(restRoute.children ?? [], restPath);
-    } else {
-      // 화면에 그려야 할 페이지를 Update OR Mount 처리한다.
-      let outlet = parent;
-
-      componentClasses.forEach((component, index) => {
-        if (
-          memo.classes[index] &&
-          memo.classes[index].name === component.name
-        ) {
-          // 화면에 이미 렌더링된 페이지는 컴포넌트를 재사용한다. (Update)
-          outlet = memo.objects[index].outlet;
-          componentObjects.push(memo.objects[index]);
-        } else {
-          // 화면에 렌더링되지 않은 페이지는 컴포넌트를 생성한다. (Mount)
-          outlet.innerHTML = "";
-
-          const newPage = component.component.createElement({
-            parent: outlet,
-          });
-
-          componentObjects.push(newPage);
-          outlet = newPage.outlet;
-        }
-      });
-
-      // 새로 렌더링해야 할 페이지가 기존 페이지보다 적을 경우 초과된 기존 페이지는 제거한다. (Delete)
-      if (componentObjects.length < memo.objects.length) {
-        const finalOutlet =
-          componentObjects[componentObjects.length - 1].outlet;
-
-        if (finalOutlet) {
-          finalOutlet.innerHTML = "";
-        }
-      }
-
-      memo = {
-        classes: componentClasses,
-        objects: componentObjects,
-      };
-
-      pageStore.setPage({
-        ...pageStore.state,
-        parameters,
-      });
+      searchPages(restRoute.children ?? [], restPath);
     }
+  }
+
+  /** 화면에 그려야 할 페이지를 처리한다. */
+  function renderPages() {
+    let outlet = parent;
+
+    componentClasses.forEach((component, index) => {
+      if (memo.classes[index] && memo.classes[index].name === component.name) {
+        // 화면에 이미 렌더링된 페이지는 컴포넌트를 재사용한다. (Update)
+        outlet = memo.objects[index].outlet;
+        componentObjects.push(memo.objects[index]);
+      } else {
+        // 화면에 렌더링되지 않은 페이지는 컴포넌트를 생성한다. (Mount)
+        outlet.innerHTML = "";
+
+        const newPage = component.component.createElement({
+          parent: outlet,
+        });
+
+        componentObjects.push(newPage);
+        outlet = newPage.outlet;
+      }
+    });
+
+    // 새로 렌더링해야 할 페이지가 기존 페이지보다 적을 경우 초과된 기존 페이지는 제거한다. (Delete)
+    if (componentObjects.length < memo.objects.length) {
+      const finalOutlet = componentObjects[componentObjects.length - 1].outlet;
+
+      if (finalOutlet) {
+        finalOutlet.innerHTML = "";
+      }
+    }
+
+    memo = {
+      classes: componentClasses,
+      objects: componentObjects,
+    };
+
+    pageStore.setPage({
+      ...pageStore.state,
+      parameters,
+    });
   }
 };

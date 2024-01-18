@@ -8,12 +8,12 @@ import Page from "./core/Page";
 
 export type Router<T extends typeof Page> = {
   path: RegExp;
-  parameters?: { name: string; index: number }[];
   component: T;
+  parameters?: { name: string; index: number }[];
   children?: Router<T>[];
 };
 
-export const newRouter: Router<typeof Page>[] = [
+export const router: Router<typeof Page>[] = [
   {
     path: /\/playground/,
     component: PlaygroundPage,
