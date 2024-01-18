@@ -42,7 +42,7 @@ type ComponentClass = {
   component: typeof Page;
 };
 
-let memoized: {
+let memo: {
   classes: ComponentClass[];
   objects: Page[];
 } = {
@@ -74,6 +74,7 @@ export const handleNavigate = ({
     const restRoute = router.find((route) => route.path.test(to));
 
     if (restRoute) {
+      // 경로를 통해 화면에 그려야 할 모든 페이지를 알아내고 Path Parameter를 추출한다.
       const regxResult = restRoute.path.exec(to)!!;
       const restPath = regxResult.input.replace(regxResult[0], "");
 
@@ -92,17 +93,19 @@ export const handleNavigate = ({
 
       searchRoute(restRoute.children ?? [], restPath);
     } else {
+      // 화면에 그려야 할 페이지를 Update OR Mount 처리한다.
       let outlet = parent;
 
       componentClasses.forEach((component, index) => {
         if (
-          memoized.classes[index] &&
-          memoized.classes[index].name === component.name
+          memo.classes[index] &&
+          memo.classes[index].name === component.name
         ) {
-          outlet = memoized.objects[index].outlet;
-          componentObjects.push(memoized.objects[index]);
+          // 화면에 이미 렌더링된 페이지는 컴포넌트를 재사용한다. (Update)
+          outlet = memo.objects[index].outlet;
+          componentObjects.push(memo.objects[index]);
         } else {
-          console.log(component.name, "렌더링 하기");
+          // 화면에 렌더링되지 않은 페이지는 컴포넌트를 생성한다. (Mount)
           outlet.innerHTML = "";
 
           const newPage = component.component.createElement({
@@ -114,7 +117,17 @@ export const handleNavigate = ({
         }
       });
 
-      memoized = {
+      // 새로 렌더링해야 할 페이지가 기존 페이지보다 적을 경우 초과된 기존 페이지는 제거한다. (Delete)
+      if (componentObjects.length < memo.objects.length) {
+        const finalOutlet =
+          componentObjects[componentObjects.length - 1].outlet;
+
+        if (finalOutlet) {
+          finalOutlet.innerHTML = "";
+        }
+      }
+
+      memo = {
         classes: componentClasses,
         objects: componentObjects,
       };
